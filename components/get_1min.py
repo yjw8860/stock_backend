@@ -4,7 +4,7 @@ import datetime
 import sqlite3
 
 def get_1min_db_connection():
-    conn = sqlite3.connect('../db/stock_price(1min).db')
+    conn = sqlite3.connect('./db/stock_price(1min).db')
     conn.row_factory = sqlite3.Row
     return conn
 

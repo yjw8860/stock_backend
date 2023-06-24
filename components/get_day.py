@@ -2,7 +2,7 @@ from fastapi import HTTPException
 import sqlite3
 
 def get_day_db_connection():
-    conn = sqlite3.connect('../db/stock_price(day).db')
+    conn = sqlite3.connect('./db/stock_price(day).db')
     conn.row_factory = sqlite3.Row
     return conn
 
