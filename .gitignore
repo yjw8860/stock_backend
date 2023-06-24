@@ -21,3 +21,5 @@ venv/bin/python3
 venv/bin/tqdm
 venv/bin/uvicorn
 venv/bin/watchfiles
+venv/bin/f2py3
+venv/bin/f2py
