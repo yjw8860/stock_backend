@@ -10,7 +10,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:3000",   # React app
-    "http://127.0.0.1:3000",   # React app
+    "http://192.168.219.108:3000",   # React app
 ]
 
 # Allow the origins defined above, allow credentials (for cookies),
