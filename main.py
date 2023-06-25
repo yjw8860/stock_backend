@@ -1,10 +1,10 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 
-from components.get_day import getDay
+from components.get_day import getOneCodeMulitpleDays, getMultipleCodesOneDay
 from components.get_1min import get1Min
-from components.get_history import getHistory
+from components.get_history import getLastHistory, getSpecificHistory
 
 app = FastAPI()
 
@@ -28,9 +28,18 @@ async def read_1min_data(code: str, start_date: int, end_date:int):
     return get1Min(code, start_date, end_date)
 
 @app.get("/day/")
-async def read_day_data(code: str, date: int):
-    return getDay(code, date)
+async def read_one_code_multiple_days(code: str, date: int):
+    return getOneCodeMulitpleDays(code, date)
 
-@app.get("/")
-async def show_basic_info():
-    return getHistory()
+@app.get("/oneDay/")
+async def read_multiple_codes_one_day(codes: str, date: int):
+    return getMultipleCodesOneDay(codes, date)
+
+
+@app.get("/history/")
+async def read_current_history():
+    return getLastHistory()
+
+@app.get("/specificHistory/")
+async def read_specific_history(date: int, duration: int):
+    return getSpecificHistory(date, duration)
