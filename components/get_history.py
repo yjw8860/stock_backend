@@ -16,12 +16,10 @@ def getLastHistory():
         result[d] = history_data[d]
     return result
 
-def getSpecificHistory(date, duration):
-    if type(duration) != int:
-        raise HTTPException(status_code=400, detail="Invalid date format")
+def getSpecificHistory(date):
     if type(date) != int and len(str(date)) != 8:
         raise HTTPException(status_code=400, detail="Invalid date format")
-    duration -= 1
+    duration = 4
     history_data = loadJson('./db/history.json')
     dateList = list(history_data.keys())
 

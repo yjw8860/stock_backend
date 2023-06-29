@@ -2,8 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import pandas as pd
 
-from components.get_day import getOneCodeMulitpleDays, getMultipleCodesOneDay
-from components.get_1min import get1Min
+from components.get_day import getOneCodeMulitpleDays, getMultipleCodesOneDay, getMultipleCodesMultipleDays
+from components.get_1min import get1Min, get_1min_multiple_codes
 from components.get_history import getLastHistory, getSpecificHistory
 
 app = FastAPI()
@@ -41,5 +41,13 @@ async def read_current_history():
     return getLastHistory()
 
 @app.get("/specificHistory/")
-async def read_specific_history(date: int, duration: int):
-    return getSpecificHistory(date, duration)
+async def read_specific_history(date: int):
+    return getSpecificHistory(date)
+
+@app.get("/1min_multiple_codes/")
+async def read_1min_multiple_codes_data(end_date:int):
+    return get_1min_multiple_codes(end_date)
+
+@app.get("/day_multiple_codes/")
+async def read_day_muliple_codes_data(end_date:int, duration:int, start_date:int):
+    return getMultipleCodesMultipleDays(end_date, duration, start_date)
