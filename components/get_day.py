@@ -116,7 +116,7 @@ def getMultipleCodesMultipleDays(end_date, duration=5, start_date=20230101):
     day_cursor = day_conn.cursor()
 
 
-    history = loadJson('./db/history.json')
+    history = loadJson('./db/history.json') #이 부분에서 시간 증가
     strKeys = list(history.keys())
     intKeys = list(map(lambda x: int(re.sub('-','', x)), strKeys))
     e_idx = find_nearest(intKeys, end_date) + 1

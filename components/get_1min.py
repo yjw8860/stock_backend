@@ -75,7 +75,7 @@ def get1Min(code, end_date):
         if len(str(end_date)) == 8:
             try:
                 # cursor.execute(f"SELECT * FROM A{table_name} WHERE Date >= 20230601 AND Date <= {str(date)};")
-                cursor.execute(f"SELECT * FROM A{code}")
+                cursor.execute(f"SELECT * FROM A{code}") #모든 data를 가져오는 작업이므로 시간 증가
                 rows = cursor.fetchall()
                 rows = list(map(lambda x: refine_row(x), rows))
                 rows = list(filter(lambda x: start_date <= x[1] <= end_date, rows))
@@ -134,7 +134,7 @@ def get_1min_multiple_codes(end_date, duration=5):
     codes = list(set(flatten_with_itertools(codes)))
     for c in codes:
         results[c] = []
-        query = f'SELECT * FROM A{c}'
+        query = f'SELECT * FROM A{c}' #모든 data를 가져오므로 시간 증가
         cursor.execute(query)
         rows = cursor.fetchall()
         rows = list(map(lambda x: refine_row(x), rows))
