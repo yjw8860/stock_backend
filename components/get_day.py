@@ -72,7 +72,7 @@ def getOneCodeMulitpleDays(code, date):
             except sqlite3.OperationalError:  # if the table doesn't exist
                 day_conn.close()
                 raise HTTPException(status_code=404, detail="Table not found")
-
+    day_conn.close()
     return result
 
 def getMultipleCodesOneDay(codes, date):
@@ -106,40 +106,22 @@ def getMultipleCodesOneDay(codes, date):
                     raise HTTPException(status_code=404, detail="Table not found")
         else:
             pass
-
+    day_conn.close()
     return result
 
-def getMultipleCodesMultipleDays(end_date, duration=5, start_date=20230101):
+def getMultipleCodesMultipleDays(strCodes, end_date):
+    codes = strCodes.split('_')
+    codes = list(filter(lambda x: x != '', codes))
+    print(codes)
+    start_date = 20200101
     results = {}
-
     day_conn = get_day_db_connection()
     day_cursor = day_conn.cursor()
 
-
-    history = loadJson('./db/history.json') #이 부분에서 시간 증가
-    strKeys = list(history.keys())
-    intKeys = list(map(lambda x: int(re.sub('-','', x)), strKeys))
-    e_idx = find_nearest(intKeys, end_date) + 1
-    s_idx = e_idx - duration
-    if(s_idx < 0):
-        s_idx = 0
-    dateList = strKeys[s_idx:e_idx]
-    codes = []
-
-    for d in dateList:
-        data = history[d]
-        try:
-            kr_data = data['KRMarket']
-            codes.append(list(kr_data.keys()))
-            
-        except KeyError as e:
-            pass
-    codes = list(set(flatten_with_itertools(codes)))
     for c in codes:
         query = f'SELECT * FROM A{c} WHERE date >= {start_date} AND date <= {end_date}'
         day_cursor.execute(query)
         rows = day_cursor.fetchall()
-        # rows = list(filter(lambda x: start_date <= x[0] <= date)) 
         results[c] = []
         for r in rows:
             data = {
@@ -151,8 +133,6 @@ def getMultipleCodesMultipleDays(end_date, duration=5, start_date=20230101):
                 "amount":r[5],
             }
             results[c].append(data)
-
+    day_conn.close()
     return results
-
-getMultipleCodesMultipleDays(20230615)
     
